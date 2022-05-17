@@ -244,7 +244,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings:
     _mapSize: {x: 89, y: 100}
-    _scale: 20
+    _scale: 21.01
+    _octaves: 4
+    _persistance: 0.24
+    _lacunarity: 2
+    _seed: 622
+    _offset: {x: -10.03, y: 0}
     IsAutoUpdate: 1
   _mapDisplay: {fileID: 1371061007}
 --- !u!4 &903119218
