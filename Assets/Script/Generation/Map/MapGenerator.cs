@@ -40,13 +40,20 @@ namespace Script.Generation.Map
                 }
             }
 
+            Texture2D noiseTexture = TextureGenerator.TexruteFromHeightMap(noiseMap);
+            Texture2D colorTexture = TextureGenerator.TextureFromColorMap(colorMap, _generationSettings.MapSize);
+            
             if (_drawMode == DrawMode.NoiseMap)
             {
-                _mapDisplay.DrawTexture(TextureGenerator.TexruteFromHeightMap(noiseMap));
+                _mapDisplay.DrawTexture(noiseTexture);
             }
             else if(_drawMode == DrawMode.ColorMap)
             {
-                _mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap,_generationSettings.MapSize));
+                _mapDisplay.DrawTexture(colorTexture);
+            }
+            else if (_drawMode == DrawMode.Mesh)
+            {
+                _mapDisplay.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap), colorTexture);
             }
             
         }
@@ -68,7 +75,8 @@ namespace Script.Generation.Map
         public enum DrawMode
         {
             NoiseMap,
-            ColorMap
+            ColorMap,
+            Mesh
         }
     }
 }
