@@ -14,7 +14,7 @@ namespace Script.Tools
 
             if (DrawDefaultInspector())
             {
-                if (mapGenerator.Settings.IsAutoUpdate)
+                if (mapGenerator.GenerationSettings.IsAutoUpdate)
                 {
                     mapGenerator.OnEditorGenerateMap();
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.Generation.NoiseRealization;
+using Script.Generation.Terrain;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,15 +9,46 @@ namespace Script.Generation.Map
 {
     public class MapGenerator : MonoBehaviour
     {
-        [SerializeField] private GenerationSettings _settings;
+        [SerializeField] private GenerationSettings _generationSettings;
+        [SerializeField] private TerrainSettings _terrainSettings;
         [SerializeField] private MapDisplay _mapDisplay;
 
-        public GenerationSettings Settings => _settings;
+        [SerializeField] 
+        private DrawMode _drawMode;
+        public GenerationSettings GenerationSettings => _generationSettings;
+        public TerrainSettings TerrainSettings => _terrainSettings;
 
         private void GenerateMap()
         {
-            float[,] noiseMap = Noise.GenerateNoiseMap(_settings);
-            _mapDisplay.DrawNoiseMap(noiseMap);
+            float[,] noiseMap = Noise.GenerateNoiseMap(_generationSettings);
+
+            Color[] colorMap = new Color[_generationSettings.MapSize.x * _generationSettings.MapSize.y];
+
+            for (int y = 0; y < _generationSettings.MapSize.y; y++)
+            {
+                for (int x = 0; x < _generationSettings.MapSize.x; x++)
+                {
+                    float currentHeight = noiseMap[x, y];
+                    for (int i = 0; i < _terrainSettings.TerrainType.Length; i++)
+                    {
+                        if (currentHeight <= _terrainSettings.TerrainType[i].Height)
+                        {
+                            colorMap[y * _generationSettings.MapSize.x + x] = _terrainSettings.TerrainType[i].Color;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (_drawMode == DrawMode.NoiseMap)
+            {
+                _mapDisplay.DrawTexture(TextureGenerator.TexruteFromHeightMap(noiseMap));
+            }
+            else if(_drawMode == DrawMode.ColorMap)
+            {
+                _mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap,_generationSettings.MapSize));
+            }
+            
         }
 
 
@@ -31,6 +63,12 @@ namespace Script.Generation.Map
             {
                 _mapDisplay = FindObjectOfType<MapDisplay>();
             }
+        }
+        
+        public enum DrawMode
+        {
+            NoiseMap,
+            ColorMap
         }
     }
 }
