@@ -53,7 +53,7 @@ namespace Script.Generation.Map
             }
             else if (_drawMode == DrawMode.Mesh)
             {
-                _mapDisplay.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap), colorTexture);
+                _mapDisplay.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, _terrainSettings), colorTexture);
             }
             
         }

@@ -4,10 +4,13 @@ namespace Script.Generation.Terrain
 {
     public class MeshGenerator
     {
-        public static MeshData GenerateTerrainMesh(float[,] heightMap)
+        public static MeshData GenerateTerrainMesh(float[,] heightMap, TerrainSettings terrainSettings)
         {
             int width = heightMap.GetLength(0);
             int height = heightMap.GetLength(1);
+            
+            var heightCurve = terrainSettings.MeshHeightCurve;
+            var heightMultiplier = terrainSettings.MeshHeightMultiplier;
 
             float topLeftX = (width - 1) / -2f;
             float topLeftZ = (height - 1) / 2f;
@@ -19,7 +22,7 @@ namespace Script.Generation.Terrain
             {
                 for (int x = 0; x < width; x++)
                 {
-                    meshData.Vertices[vertexIndex] = new Vector3(topLeftX+x, heightMap[x, y], topLeftZ - y);
+                    meshData.Vertices[vertexIndex] = new Vector3(topLeftX+x, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier, topLeftZ - y);
                     meshData.UVs[vertexIndex] = new Vector2(x / (float) width, y / (float) height);
 
                     if (x < width - 1 && y < height - 1)
