@@ -6,6 +6,8 @@ namespace Script.Generation
     [Serializable]
     public class GenerationSettings
     {
+        // _mapSize must be less then 250x250 by the engine restriction
+        // for one mesh allow max 65000 vertices 
         [SerializeField] private Vector2Int _mapSize;
         [SerializeField] private float _scale;
         [SerializeField] private int _octaves;
