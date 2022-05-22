@@ -39,24 +39,32 @@ namespace Script.Generation.Map
                     }
                 }
             }
+            
+            DrawMap(noiseMap,colorMap);
+        }
 
+        private void DrawMap(float[,] noiseMap, Color[] colorMap)
+        {
             Texture2D noiseTexture = TextureGenerator.TexruteFromHeightMap(noiseMap);
             Texture2D colorTexture = TextureGenerator.TextureFromColorMap(colorMap, _generationSettings.MapSize);
+            MeshData generatedMeshData = MeshGenerator.GenerateTerrainMesh(noiseMap, _terrainSettings);
             
-            if (_drawMode == DrawMode.NoiseMap)
+            switch (_drawMode)
             {
-                _mapDisplay.DrawTexture(noiseTexture);
+                case DrawMode.NoiseMap:
+                    _mapDisplay.DrawTexture(noiseTexture);
+                    break;
+                case DrawMode.ColorMap:
+                    _mapDisplay.DrawTexture(colorTexture);
+                    break;
+                case DrawMode.Mesh:
+                    _mapDisplay.DrawMesh(generatedMeshData, colorTexture);
+                    break;
+                default:
+                    Debug.LogWarning($"[{nameof(MapGenerator)}][{nameof(GenerateMap)}] unknown state for draw map");
+                    break;
             }
-            else if(_drawMode == DrawMode.ColorMap)
-            {
-                _mapDisplay.DrawTexture(colorTexture);
-            }
-            else if (_drawMode == DrawMode.Mesh)
-            {
-                _mapDisplay.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, _terrainSettings), colorTexture);
-            }
-            
-        }
+        } 
 
 
         public void OnEditorGenerateMap()
