@@ -6,12 +6,17 @@ namespace Script.Generation.Terrain
     [Serializable]
     public class TerrainSettings
     {
-        [SerializeField] private TerrainType[] _terrainTypes;
+        [Range(0,6)]
+        [SerializeField] private int _levelOfDetail;
+        [Space]
         [SerializeField] private float _meshHeightMultiplier;
         [SerializeField] private AnimationCurve _meshHeightCurve;
+        [Space]
+        [SerializeField] private TerrainType[] _terrainTypes;
 
         public TerrainType[] TerrainType => _terrainTypes;
         public float MeshHeightMultiplier => _meshHeightMultiplier;
         public AnimationCurve MeshHeightCurve => _meshHeightCurve;
+        public int LevelOfDetail => _levelOfDetail;
     }
 }

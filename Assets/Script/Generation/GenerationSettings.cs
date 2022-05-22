@@ -6,8 +6,10 @@ namespace Script.Generation
     [Serializable]
     public class GenerationSettings
     {
-        // _mapSize must be less then 250x250 by the engine restriction
-        // for one mesh allow max 65000 vertices 
+        // _mapSize must be less then 255x255 by the engine restriction
+        // for one mesh allow max 65025 vertices
+        public const int CHUNK_SIZE = 241;
+        [SerializeField] private bool _isUsedConstSize = true;
         [SerializeField] private Vector2Int _mapSize;
         [SerializeField] private float _scale;
         [SerializeField] private int _octaves;
@@ -24,8 +26,17 @@ namespace Script.Generation
         {
             get
             {
-                _mapSize.x = _mapSize.x < 1 ? 1 : _mapSize.x;
-                _mapSize.y = _mapSize.y < 1 ? 1 : _mapSize.y;
+                if (_isUsedConstSize)
+                {
+                    _mapSize.x = CHUNK_SIZE;
+                    _mapSize.y = CHUNK_SIZE;
+                }
+                else
+                {
+                    _mapSize.x = _mapSize.x < 1 ? 1 : _mapSize.x;
+                    _mapSize.y = _mapSize.y < 1 ? 1 : _mapSize.y;
+                }
+                
                 return _mapSize;
             }
         }
@@ -59,7 +70,7 @@ namespace Script.Generation
         {
             get
             {
-                return new Vector2(_mapSize.x/2f,_mapSize.y/2f);
+                return new Vector2(MapSize.x/2f,MapSize.y/2f);
             }
         }
     }
