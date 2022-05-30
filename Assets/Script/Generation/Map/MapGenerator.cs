@@ -1,6 +1,8 @@
 ﻿using System;
 using Script.Generation.NoiseRealization;
 using Script.Generation.Terrain;
+using Script.Generation.Terrain.TerrainData;
+using Script.Generation.Terrain.TerrainMesh;
 using UnityEditor;
 using UnityEngine;
 

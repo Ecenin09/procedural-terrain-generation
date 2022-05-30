@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.Generation.Terrain;
+using Script.Generation.Terrain.TerrainMesh;
 using UnityEngine;
 
 namespace Script.Generation.Map
